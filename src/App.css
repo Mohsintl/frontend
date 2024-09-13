@@ -30,7 +30,7 @@
   border: 1px solid skyblue;
   
  }
- .register {
+ .register, .login , .addproduct{
   margin-left: 30%;
  }
  .appButton {
@@ -41,3 +41,18 @@
   border: 1px solid;
   cursor: pointer;
  }
+
+ /* .Login {
+  margin-left: 30%;
+ } */
+  .nav-right {
+    text-align: right;
+  }
+
+  .invalid-input {
+    color: red;
+    margin-top: -20px;
+    display: block;
+    margin-left:30px ;
+    
+  }

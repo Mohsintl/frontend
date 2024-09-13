@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 
 const Signup = () => {
   const [name, setName] = useState("");
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
 
@@ -19,10 +19,10 @@ const Signup = () => {
 
 
   const collectData = async ()=>{
-    console.warn({name,Email,password})
+    console.warn({name,email,password})
     let result = await fetch('http://localhost:5000/register',{
       method:'post',
-      body:JSON.stringify({name,Email,password}),
+      body:JSON.stringify({name,email,password}),
       headers:{
         'Content-Type':'application/json'
       },
@@ -50,7 +50,7 @@ const Signup = () => {
         className="InputBox"
         type="text"
         placeholder="Email"
-        value={Email}
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       ></input>
       <input
