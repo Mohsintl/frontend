@@ -1,33 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from 'react-router-dom'
 
-const AddProduct = () => {
+const UpdateProduct = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [company, setCompany] = useState('');
     const [error, setError] = useState(false)
-    const addProduct = async () => {
-        // console.warn({ name, price, category, company })
-        if (!name || !price || !category || !company) {
-            setError(true);
-            return false;
-        }
+    const params = useParams();
+    const navigate = useNavigate();
 
-        const userId = JSON.parse(localStorage.getItem('user'))._id;
-
-        let result = await fetch('http://localhost:5000/add-product', {
-            method: 'post',
-            body: JSON.stringify({ name, price, category, userId, company }),
+    useEffect(() => {
+        getProductDetails();
+    }, [])
+    const updateProduct = async () => {
+        console.warn({ name, price, category, company })
+        let result = await fetch(`http://localhost:5000/product/${params.id}`, {
+            method: 'put',
+            body: JSON.stringify({ name, price, category, company }),
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 authoziation: `bearer ${JSON.parse(localStorage.getItem('token'))}`
             }
         })
         result = await result.json();
-        console.warn(result);
+        console.warn(result)
+        navigate('/')
 
 
     }
+    const getProductDetails = async () => {
+        let result = await fetch(`http://localhost:5000/product/${params.id}`, {
+            method: 'get',
+            headers: {
+                authoziation: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        })
+        result = await result.json();
+        setName(result.name);
+        setPrice(result.price);
+        setCategory(result.category);
+        setCompany(result.company)
+
+    }
+
+
+
+
     return <div className="addproduct">
         <input type="text" placeholder="product name" className="InputBox"
             value={name} onChange={(e) => setName(e.target.value)} />
@@ -41,7 +60,7 @@ const AddProduct = () => {
         <input type="text" placeholder="product company" className="InputBox" value={company}
             onChange={(e) => setCompany(e.target.value)} />
         {error && !company && <span className="invalid-input">enter valid company </span>}
-        <button type="button" className="appButton" onClick={addProduct}>add Product</button>
+        <button type="button" className="appButton" onClick={updateProduct}>Update Product</button>
     </div>
 }
-export default AddProduct;
+export default UpdateProduct;
